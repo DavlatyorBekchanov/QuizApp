@@ -23,3 +23,18 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+.quiz-answer:hover {
+    cursor: pointer;
+    background-color: #aabacc;
+
+}
+
+
+.bg-success {
+    background-color: green !important;
+}
+
+.bg-danger {
+    background-color: red !important;
+}
