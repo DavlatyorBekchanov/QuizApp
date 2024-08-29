@@ -37,6 +37,7 @@ let questions = [
 ];
 
 let currentQuestion = 0;
+  let rightQuestions = 0;
 
 function init(){
 
@@ -48,7 +49,10 @@ showquestion();
 function showquestion() {
 
   if (currentQuestion >= questions.length) {
-    
+      document.getElementById('endscreen').style = "";
+      document.getElementById('question-body').style = 'display:none'
+      document.getElementById('question-beantwortet').innerHTML = questions.length;
+      document.getElementById('right-of-question').innerHTML = rightQuestions;
   }
     else {   
 
@@ -82,8 +86,10 @@ function answer(selection) {
        let rightOfAnswer = null;
     for (let key in question) {
         if (question[key] === question['correctAnswer']) {
-            rightOfAnswer = key.replace(' ', '_'); // "answer 1" -> "answer_1"
+           
+          rightOfAnswer = key.replace(' ', '_'); // "answer 1" -> "answer_1"
             break;
+           
         }
     }
 
@@ -94,6 +100,7 @@ function answer(selection) {
     // Matnlarni solishtirish
     if (selectedAnswerText === question['correctAnswer']) {
         document.getElementById(selection).parentNode.classList.add('bg-success');
+         rightQuestions++;
         console.log('Richtige Antwort!!');
     } else {
         document.getElementById(selection).parentNode.classList.add('bg-danger');

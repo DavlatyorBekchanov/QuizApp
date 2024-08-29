@@ -29,7 +29,23 @@
     <div class="container">
         <div class="card quiz-card">
             <img src="./img/quiz.jpg" class="card-img-top">
-            <div class="card-body">
+
+            <div class="quizbody" id="endscreen" style="display: none;">
+
+                <div class="tex-center "> Quiz beendet</div>
+                <div class="width-100 "> <img src="./img/cup.png" alt=""> </div>
+
+                <div class="tex-center ">
+                    du hast <b id="right-of-question"></b> Fragen richtig von <b id="question-beantwortet"> von XXX
+                    </b>
+                    beantwortet
+                </div>
+
+
+            </div>
+
+
+            <div class="card-body" id="question-body">
                 <h5 class="card-title" id="questionstext">Frage</h5>
 
                 <div class="card quiz-answer mb-2">

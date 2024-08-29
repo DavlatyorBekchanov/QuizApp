@@ -38,3 +38,14 @@ body {
 .bg-danger {
     background-color: red !important;
 }
+
+.width-100 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tex-center {
+    text-align: center;
+}
