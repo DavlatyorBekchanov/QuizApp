@@ -37,98 +37,253 @@ let questions = [
 ];
 
 let currentQuestion = 0;
-  let rightQuestions = 0;
+let rightQuestions = 0;
 
-function init(){
-
+function init() {
     document.getElementById('all-question').innerHTML = questions.length;
-
-showquestion();
+    showQuestion();
 }
 
-function showquestion() {
+function showQuestion() {
+    if (currentQuestion >= questions.length) {
+        showEndScreen();
+    } else {
+        updateProgressBar();
+        displayQuestion();
+    }
+}
 
-  if (currentQuestion >= questions.length) {
-      document.getElementById('endscreen').style = "";
-      document.getElementById('question-body').style = 'display:none'
-      document.getElementById('question-beantwortet').innerHTML = questions.length;
-      document.getElementById('right-of-question').innerHTML = rightQuestions;
-  }
-    else {   
+function showEndScreen() {
+    document.getElementById('endscreen').style = "";
+    document.getElementById('question-body').style = 'display:none';
+    document.getElementById('question-beantwortet').innerHTML = questions.length;
+    document.getElementById('right-of-question').innerHTML = rightQuestions;
+    document.getElementById('header-image').src = './img/cup.png';
+}
 
+function updateProgressBar() {
+    let percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
+    document.getElementById('progress-bar').innerHTML = `${percent} %`;
+    document.getElementById('progress-bar').style.width = `${percent}%`;
+}
+
+function displayQuestion() {
     let question = questions[currentQuestion];
-    document.getElementById('question-number').innerHTML = currentQuestion +1;
+    document.getElementById('question-number').innerHTML = currentQuestion + 1;
     document.getElementById('questionstext').innerHTML = question.question;
     document.getElementById('answer_1').innerHTML = question['answer 1'];
     document.getElementById('answer_2').innerHTML = question['answer 2'];
     document.getElementById('answer_3').innerHTML = question['answer 3'];
-    // document.getElementById('answer_4').innerHTML = question['answer 4'];
-
-    
- }
-
 }
-
 
 function answer(selection) {
     let question = questions[currentQuestion];
-    console.log('Selected answer is', selection);
+    let selectedAnswerText = document.getElementById(selection).innerText;
 
+    let rightAnswerKey = getRightAnswerKey(question);
+    let rightAnswerElement = document.getElementById(rightAnswerKey);
 
-//  let rightOfAnswer = `answer ${question['correctAnswer']}`;
-
-    // `selection` formatini to'g'rilash
-    let adjustedSelection = selection.replace('_', ' '); // answer_1 -> answer 1
-
-    // Tanlangan javob matnini olish
-    let selectedAnswerText = question[adjustedSelection]; // Bu yerda `adjustedSelection` to'g'ri xususiyatga murojaat qiladi
-
-       let rightOfAnswer = null;
-    for (let key in question) {
-        if (question[key] === question['correctAnswer']) {
-           
-          rightOfAnswer = key.replace(' ', '_'); // "answer 1" -> "answer_1"
-            break;
-           
-        }
-    }
-
-    // Konsolda tekshirish
-    console.log('Selected answer text is', selectedAnswerText);
-    console.log('Correct answer is', question['correctAnswer']);
-
-    // Matnlarni solishtirish
     if (selectedAnswerText === question['correctAnswer']) {
         document.getElementById(selection).parentNode.classList.add('bg-success');
-         rightQuestions++;
-        console.log('Richtige Antwort!!');
+        rightQuestions++;
     } else {
         document.getElementById(selection).parentNode.classList.add('bg-danger');
-                document.getElementById(rightOfAnswer).parentNode.classList.add('bg-success');
-
-        console.log('Falsche Antwort!!');
-
+        rightAnswerElement.parentNode.classList.add('bg-success');
     }
-        document.getElementById('next-button').disabled = false;
 
+    document.getElementById('next-button').disabled = false;
 }
 
-   function nextQuestion(){
-        currentQuestion++;
-        resetAnswerbutton();
-        showquestion();
-   }
+function getRightAnswerKey(question) {
+    for (let key in question) {
+        if (question[key] === question['correctAnswer']) {
+            return key.replace(' ', '_');
+        }
+    }
+}
 
-   function resetAnswerbutton(){
-       document.getElementById('answer_1').parentNode.classList.remove('bg-danger');
-       document.getElementById('answer_1').parentNode.classList.remove('bg-success');
-       document.getElementById('answer_2').parentNode.classList.remove('bg-danger');
-       document.getElementById('answer_2').parentNode.classList.remove('bg-success');
-       document.getElementById('answer_3').parentNode.classList.remove('bg-danger');
-       document.getElementById('answer_3').parentNode.classList.remove('bg-success');
+function nextQuestion() {
+    currentQuestion++;
+    resetAnswerButtons();
+    showQuestion();
+}
 
-   }
+function resetAnswerButtons() {
+    let answers = ['answer_1', 'answer_2', 'answer_3'];
+    answers.forEach(answer => {
+        document.getElementById(answer).parentNode.classList.remove('bg-danger', 'bg-success');
+    });
+}
 
+function restartGame() {
+    document.getElementById('header-image').src = 'image/quiz.jpg';
+    currentQuestion = 0;
+    rightQuestions = 0;
+
+    document.getElementById('question-body').style = '';
+    document.getElementById('endscreen').style = "display:none";
+    init();
+}
+
+init();
+
+
+
+
+
+
+
+
+
+
+
+
+// let questions = [
+//   {
+//     "question": "What is the capital of Japan?",
+//     "answer 1": "Tokyo",
+//     "answer 2": "Kyoto",
+//     "answer 3": "Osaka",
+//     "correctAnswer": "Tokyo"
+//   },
+//   {
+//     "question": "Which element has the chemical symbol 'O'?",
+//     "answer 1": "Oxygen",
+//     "answer 2": "Osmium",
+//     "answer 3": "Oganesson",
+//     "correctAnswer": "Oxygen"
+//   },
+//   {
+//     "question": "Which language is primarily spoken in Brazil?",
+//     "answer 1": "Spanish",
+//     "answer 2": "Portuguese",
+//     "answer 3": "French",
+//     "correctAnswer": "Portuguese"
+//   },
+//   {
+//     "question": "What is the largest planet in our solar system?",
+//     "answer 1": "Earth",
+//     "answer 2": "Jupiter",
+//     "answer 3": "Saturn",
+//     "correctAnswer": "Jupiter"
+//   },
+//   {
+//     "question": "Which ocean is the deepest?",
+//     "answer 1": "Atlantic Ocean",
+//     "answer 2": "Indian Ocean",
+//     "answer 3": "Pacific Ocean",
+//     "correctAnswer": "Pacific Ocean"
+//   }
+// ];
+
+// let currentQuestion = 0;
+//   let rightQuestions = 0;
+
+// function init(){
+
+//     document.getElementById('all-question').innerHTML = questions.length;
+
+// showquestion();
+// }
+
+// function showquestion() {
+
+//   if (currentQuestion >= questions.length) {
+//       document.getElementById('endscreen').style = "";
+//       document.getElementById('question-body').style = 'display:none'
+//       document.getElementById('question-beantwortet').innerHTML = questions.length;
+//       document.getElementById('right-of-question').innerHTML = rightQuestions;
+//       document.getElementById('header-image').src = './img/cup.png';
+//   }
+//     else {   
+
+//        let percent = (currentQuestion +1)  / questions.length;
+//          percent = Math.round(percent * 100);
+//       document.getElementById('progress-bar').innerHTML = `${percent} %`
+//       document.getElementById('progress-bar').style = `width: ${percent}%`
+
+//     let question = questions[currentQuestion];
+//     document.getElementById('question-number').innerHTML = currentQuestion +1;
+//     document.getElementById('questionstext').innerHTML = question.question;
+//     document.getElementById('answer_1').innerHTML = question['answer 1'];
+//     document.getElementById('answer_2').innerHTML = question['answer 2'];
+//     document.getElementById('answer_3').innerHTML = question['answer 3'];
+//     // document.getElementById('answer_4').innerHTML = question['answer 4'];
+
+    
+//  }
+
+// }
+
+
+// function answer(selection) {
+//     let question = questions[currentQuestion];
+//     console.log('Selected answer is', selection);
+
+
+// //  let rightOfAnswer = `answer ${question['correctAnswer']}`;
+
+//     // `selection` formatini to'g'rilash
+//     let adjustedSelection = selection.replace('_', ' '); // answer_1 -> answer 1
+
+//     // Tanlangan javob matnini olish
+//     let selectedAnswerText = question[adjustedSelection]; // Bu yerda `adjustedSelection` to'g'ri xususiyatga murojaat qiladi
+
+//        let rightOfAnswer = null;
+//     for (let key in question) {
+//         if (question[key] === question['correctAnswer']) {
+           
+//           rightOfAnswer = key.replace(' ', '_'); // "answer 1" -> "answer_1"
+//             break;
+           
+//         }
+//     }
+
+//     // Konsolda tekshirish
+//     console.log('Selected answer text is', selectedAnswerText);
+//     console.log('Correct answer is', question['correctAnswer']);
+
+//     // Matnlarni solishtirish
+//     if (selectedAnswerText === question['correctAnswer']) {
+//         document.getElementById(selection).parentNode.classList.add('bg-success');
+//          rightQuestions++;
+//         console.log('Richtige Antwort!!');
+//     } else {
+//         document.getElementById(selection).parentNode.classList.add('bg-danger');
+//                 document.getElementById(rightOfAnswer).parentNode.classList.add('bg-success');
+
+//         console.log('Falsche Antwort!!');
+
+//     }
+//         document.getElementById('next-button').disabled = false;
+
+// }
+
+//    function nextQuestion(){
+//         currentQuestion++;
+//         resetAnswerbutton();
+//         showquestion();
+//    }
+
+//    function resetAnswerbutton(){
+//        document.getElementById('answer_1').parentNode.classList.remove('bg-danger');
+//        document.getElementById('answer_1').parentNode.classList.remove('bg-success');
+//        document.getElementById('answer_2').parentNode.classList.remove('bg-danger');
+//        document.getElementById('answer_2').parentNode.classList.remove('bg-success');
+//        document.getElementById('answer_3').parentNode.classList.remove('bg-danger');
+//        document.getElementById('answer_3').parentNode.classList.remove('bg-success');
+
+//    }
+
+//    function restartGame(){
+// document.getElementById('header-image').src = './image/quiz.jpg'
+//           currentQuestion = 0;
+//           rightQuestions = 0;
+          
+//           document.getElementById('question-body').style = '';
+//           document.getElementById('endscreen').style = "display:none";
+//           init();
+//    }
    
 
 
@@ -169,6 +324,6 @@ function answer(selection) {
         
 
 // }
-init();
+// init();
 
 

@@ -49,3 +49,9 @@ body {
 .tex-center {
     text-align: center;
 }
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
